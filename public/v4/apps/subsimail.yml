@@ -1,0 +1,40 @@
+captainVersion: 4
+services:
+    $$cap_appname:
+        image: subsimail/subsimail:$$cap_subsimail_version
+        restart: always
+        volumes:
+            - $$cap_appname-data:/app/data
+        environment:
+            DATABASE_URL: sqlite:///app/data/subsimail.db
+        caproverExtra:
+            containerHttpPort: '3000'
+caproverOneClickApp:
+    variables:
+        - id: '$$cap_subsimail_version'
+          label: SubsiMail Version
+          defaultValue: '2.1.2'
+          description: Check available tags at https://hub.docker.com/r/subsimail/subsimail/tags
+          validRegex: '/^([^\s^\/])+$/'
+    instructions:
+        start: |-
+            SubsiMail is a self-hosted cold email outreach tool you fully own: multi-step
+            sequences, open/click tracking, reply detection, and a full REST API, running
+            entirely on your own server. Connect your own Gmail, Outlook, or SMTP inbox --
+            no shared sending infrastructure, no per-seat pricing.
+        end: |-
+            SubsiMail is deployed!
+
+            1. Enable HTTPS for $$cap_appname.$$cap_root_domain via CapRover's HTTP Settings /
+               Let's Encrypt.
+            2. Open https://$$cap_appname.$$cap_root_domain -- you'll land on the license
+               activation screen. A free tier is available; see https://subsimail.com/account
+               to get a token.
+            3. Continue with first-run setup: https://subsimail.com/docs/first-setup
+
+            All data (contacts, campaigns, connected-account tokens, users) lives in the
+            persistent volume mounted at /app/data.
+    displayName: 'SubsiMail'
+    isOfficial: false
+    description: Self-hosted cold email outreach -- sequences, tracking, BYOC inboxes, no per-seat pricing.
+    documentation: See https://subsimail.com/docs for the full setup guide.
